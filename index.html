@@ -1,1 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un Nuevo Comienzo – Red de Matrimonios</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Dancing+Script:wght@700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F5E9C8;
+    --cream: #FDF6E8;
+    --dark: #2C1A0E;
+    --warm-brown: #5C3A1E;
+  }
+
+  body {
+    font-family: 'Cormorant Garamond', serif;
+    background: #1a0e05;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  /* ── FLYER CONTAINER ── */
+  .flyer {
+    position: relative;
+    width: min(480px, 100vw);
+    background: linear-gradient(160deg, #FDF3DC 0%, #F5E2B0 40%, #E8C97A22 70%, #FDF3DC 100%);
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  }
+
+  /* ── GOLDEN LIGHT SHIMMER ── */
+  .shimmer {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 20%, rgba(255,215,100,0.35) 0%, transparent 70%);
+    animation: shimmerPulse 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+  @keyframes shimmerPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50%       { opacity: 1;   transform: scale(1.05); }
+  }
+
+  /* ── FLOATING HEARTS ── */
+  .hearts-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+  }
+  .heart {
+    position: absolute;
+    font-size: 14px;
+    color: var(--gold);
+    opacity: 0;
+    animation: floatHeart linear infinite;
+  }
+  @keyframes floatHeart {
+    0%   { opacity: 0;   transform: translateY(0) scale(0.5) rotate(-10deg); }
+    15%  { opacity: 0.7; }
+    85%  { opacity: 0.5; }
+    100% { opacity: 0;   transform: translateY(-120vh) scale(1.2) rotate(10deg); }
+  }
+
+  /* ── TOP SECTION ── */
+  .top-section {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 38px 30px 0;
+    animation: fadeSlideDown 1s ease both;
+  }
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .red-label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.38em;
+    color: var(--warm-brown);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeIn 0.8s 0.3s ease both;
+  }
+  .divider-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 6px auto;
+    opacity: 0;
+    animation: fadeIn 0.8s 0.5s ease both;
+  }
+  .divider-line::before, .divider-line::after {
+    content: '';
+    height: 1px;
+    width: 55px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+  .divider-line::after { background: linear-gradient(to left, transparent, var(--gold)); }
+  .divider-line span { color: var(--gold); font-size: 10px; }
+
+  .title-un { 
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 13vw, 72px);
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeSlideUp 0.9s 0.6s cubic-bezier(.2,.8,.4,1) both;
+  }
+  .title-nuevo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 13vw, 72px);
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeSlideUp 0.9s 0.75s cubic-bezier(.2,.8,.4,1) both;
+  }
+  .title-comienzo {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(50px, 13vw, 68px);
+    color: var(--gold);
+    line-height: 1.1;
+    position: relative;
+    display: inline-block;
+    opacity: 0;
+    animation: fadeSlideUp 1s 0.9s cubic-bezier(.2,.8,.4,1) both;
+  }
+  .title-comienzo::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 10%;
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    animation: growLine 1s 1.8s ease both;
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  @keyframes growLine {
+    to { transform: scaleX(1); }
+  }
+
+  /* ── VERSE SECTION ── */
+  .verse-section {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 14px 40px 0;
+    opacity: 0;
+    animation: fadeIn 1s 1.3s ease both;
+  }
+  .verse-text {
+    font-size: 17px;
+    color: var(--dark);
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .verse-text strong {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--gold);
+    font-size: 18px;
+  }
+  .ornament {
+    color: var(--gold);
+    font-size: 18px;
+    margin: 6px 0;
+    display: block;
+    letter-spacing: 8px;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+  .verse-ref {
+    font-style: italic;
+    font-size: 15px;
+    color: var(--warm-brown);
+  }
+
+  /* ── BADGE (centrado, standalone) ── */
+  .badge-section {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 28px 30px 10px;
+    opacity: 0;
+    animation: fadeIn 1s 1.5s ease both;
+  }
+  .badge {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border: 2px solid rgba(201,168,76,0.7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 26px;
+    background: radial-gradient(ellipse at center, rgba(253,246,232,0.95) 0%, rgba(245,226,176,0.8) 100%);
+    box-shadow: 0 0 40px rgba(201,168,76,0.25), inset 0 0 20px rgba(201,168,76,0.1);
+    animation: badgePulse 4s ease-in-out infinite;
+  }
+  @keyframes badgePulse {
+    0%,100%{ box-shadow: 0 0 30px rgba(201,168,76,0.2), inset 0 0 20px rgba(201,168,76,0.1); }
+    50%    { box-shadow: 0 0 55px rgba(201,168,76,0.45), inset 0 0 30px rgba(201,168,76,0.2); }
+  }
+  .badge::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(201,168,76,0.45);
+    border-radius: 50%;
+  }
+  .badge::after {
+    content: '🌿';
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    font-size: 16px;
+    opacity: 0.8;
+  }
+  .badge p {
+    font-size: 15.5px;
+    color: var(--dark);
+    font-style: italic;
+    line-height: 1.55;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .badge .heart-small { color: var(--gold); font-size: 14px; display: block; margin-top: 8px; }
+
+  /* ── INFO SECTION ── */
+  .info-section {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 0;
+    padding: 18px 24px 8px;
+    opacity: 0;
+    animation: fadeSlideUp 0.9s 2.1s ease both;
+  }
+  .info-item {
+    flex: 1;
+    text-align: center;
+    padding: 0 12px;
+    position: relative;
+  }
+  .info-item + .info-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 10%; bottom: 10%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+  }
+  .info-icon {
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 6px;
+    color: var(--gold);
+    font-size: 14px;
+    animation: iconGlow 3s ease-in-out infinite;
+  }
+  @keyframes iconGlow {
+    0%,100%{ box-shadow: 0 0 0 0 rgba(201,168,76,0); }
+    50%{ box-shadow: 0 0 12px 3px rgba(201,168,76,0.3); }
+  }
+  .info-main {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1;
+  }
+  .info-sub {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--warm-brown);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .info-place-main {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.1;
+  }
+  .info-place-sub {
+    font-family: 'Dancing Script', cursive;
+    font-size: 18px;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  /* ── CLOSING LINE ── */
+  .closing {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 10px 0 18px;
+    opacity: 0;
+    animation: fadeIn 1s 2.4s ease both;
+  }
+  .closing-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .closing-line::before, .closing-line::after {
+    content: '';
+    height: 1px;
+    width: 40px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+  .closing-line::after { background: linear-gradient(to left, transparent, var(--gold)); }
+  .te-esperamos {
+    font-family: 'Dancing Script', cursive;
+    font-size: 32px;
+    color: var(--dark);
+    animation: heartbeat 2s ease-in-out infinite;
+  }
+  @keyframes heartbeat {
+    0%,100%{ transform: scale(1); }
+    30%{ transform: scale(1.04); }
+    60%{ transform: scale(0.98); }
+  }
+  .closing-heart { color: var(--gold); font-size: 14px; }
+
+  /* ── REGISTER SECTION ── */
+  .register-section {
+    width: min(480px, 100vw);
+    background: var(--dark);
+    padding: 32px 30px 40px;
+    text-align: center;
+    opacity: 0;
+    animation: fadeSlideUp 0.9s 2.7s ease both;
+  }
+  .register-title {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .register-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: rgba(253,246,232,0.7);
+    margin-bottom: 22px;
+  }
+  .register-btn {
+    display: inline-block;
+    padding: 14px 44px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+    background-size: 200% 200%;
+    color: var(--dark);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    animation: goldShift 3s ease infinite;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  @keyframes goldShift {
+    0%,100%{ background-position: 0% 50%; }
+    50%{ background-position: 100% 50%; }
+  }
+  .register-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: btnShine 2.5s 3.5s ease infinite;
+  }
+  @keyframes btnShine {
+    0%{ left: -100%; }
+    40%,100%{ left: 150%; }
+  }
+  .register-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.4);
+  }
+  .register-btn:active { transform: translateY(0); }
+  .register-note {
+    font-size: 12px;
+    color: rgba(253,246,232,0.4);
+    margin-top: 14px;
+    font-style: italic;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20,10,5,0.85);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--cream);
+    width: min(440px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 36px 28px;
+    position: relative;
+    animation: modalIn 0.4s cubic-bezier(.2,.8,.4,1) both;
+    border-top: 3px solid var(--gold);
+  }
+  @keyframes modalIn {
+    from { opacity:0; transform: translateY(30px) scale(0.97); }
+    to   { opacity:1; transform: translateY(0) scale(1); }
+  }
+  .modal-close {
+    position: absolute;
+    top: 12px; right: 16px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--warm-brown);
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.2s;
+  }
+  .modal-close:hover { transform: rotate(90deg); }
+  .modal-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .modal-header .modal-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .modal-header h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 32px;
+    color: var(--dark);
+    margin-top: 4px;
+  }
+  .modal-header .modal-verse {
+    font-size: 13px;
+    color: var(--warm-brown);
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  .form-row { display: flex; gap: 12px; }
+  .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+  }
+  .form-group label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--warm-brown);
+    margin-bottom: 5px;
+  }
+  .form-group input, .form-group select {
+    border: 1px solid rgba(92,58,30,0.25);
+    border-bottom: 2px solid var(--gold);
+    background: rgba(255,255,255,0.5);
+    padding: 9px 10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group select:focus {
+    background: #fff;
+    border-color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+  .form-group select { cursor: pointer; }
+  .form-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 6px 0 12px;
+    color: var(--gold);
+    font-size: 12px;
+  }
+  .form-divider::before, .form-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,168,76,0.35);
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border: none;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dark);
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(201,168,76,0.35);
+  }
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+  .success-msg .success-icon { font-size: 40px; margin-bottom: 10px; }
+  .success-msg h3 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 28px;
+    color: var(--dark);
+    margin-bottom: 8px;
+  }
+  .success-msg p { font-size: 15px; color: var(--warm-brown); font-style: italic; }
+
+  @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+  @keyframes fadeSlideUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+  @keyframes shake {
+    0%,100%{ transform: translateX(0); }
+    20%{ transform: translateX(-8px); }
+    40%{ transform: translateX(8px); }
+    60%{ transform: translateX(-5px); }
+    80%{ transform: translateX(5px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── FLYER ── -->
+<div class="flyer">
+  <div class="shimmer"></div>
+
+  <!-- Floating hearts -->
+  <div class="hearts-container" id="hearts"></div>
+
+  <!-- Top -->
+  <div class="top-section">
+    <p class="red-label">Red de Matrimonios</p>
+    <div class="divider-line"><span>♥</span></div>
+    <div class="title-un">UN</div>
+    <div class="title-nuevo">NUEVO</div>
+    <div class="title-comienzo">comienzo</div>
+  </div>
+
+  <!-- Verse -->
+  <div class="verse-section">
+    <p class="verse-text"><strong>EL PADRE</strong> restaura,<br>sana y hace<br>nuevas todas las cosas.</p>
+    <span class="ornament">✦ ✦ ✦</span>
+    <p class="verse-ref"><em>Apocalipsis 21:5</em></p>
+  </div>
+
+  <!-- Badge centrado -->
+  <div class="badge-section">
+    <div class="badge">
+      <p>Un espacio para sanar, restaurar y volver a elegirnos cada día.<span class="heart-small">♥</span></p>
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="info-section">
+    <div class="info-item">
+      <div class="info-icon">📅</div>
+      <div class="info-main">23</div>
+      <div class="info-sub">de Mayo</div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">🕖</div>
+      <div class="info-main">19:00 h</div>
+      <div class="info-sub">&nbsp;</div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon">📍</div>
+      <div class="info-place-main">RENUEVO</div>
+      <div class="info-place-sub">de Gracia</div>
+    </div>
+  </div>
+
+  <!-- Closing -->
+  <div class="closing">
+    <div class="closing-line">
+      <span class="closing-heart">♥</span>
+      <span class="te-esperamos">Te esperamos</span>
+      <span class="closing-heart">♥</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── REGISTER SECTION ── -->
+<div class="register-section">
+  <p class="register-title">Inscripción al evento</p>
+  <button class="register-btn" onclick="openModal()">✦ Registrar nuestra pareja ✦</button>
+</div>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeOnOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    
+    <div class="modal-header">
+      <p class="modal-tag">Red de Matrimonios · Renuevo de Gracia</p>
+      <h2>Un Nuevo Comienzo</h2>
+      <p class="modal-verse">23 de Mayo · 19:00 h</p>
+    </div>
+
+    <div id="formWrapper">
+      <div class="form-divider">♥ Él</div>
+      <div class="form-group">
+        <label>Nombre de él</label>
+        <input type="text" id="nombreEl" placeholder="Juan…">
+      </div>
+
+      <div class="form-divider">♥ Ella</div>
+      <div class="form-group">
+        <label>Nombre de ella</label>
+        <input type="text" id="nombreElla" placeholder="María…">
+      </div>
+
+      <div class="form-divider">♥ Contacto</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="tel" id="telefono" placeholder="+56 9 …">
+        </div>
+        <div class="form-group">
+          <label>Correo</label>
+          <input type="email" id="correo" placeholder="correo@…">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>¿Cómo se enteraron?</label>
+        <select id="comoSeEnteraron">
+          <option value="">— Seleccionar —</option>
+          <option>Redes sociales</option>
+          <option>WhatsApp / Grupo</option>
+          <option>Un amigo / familiar</option>
+          <option>Iglesia (fiesta en casa)</option>
+          <option>Otro</option>
+        </select>
+      </div>
+
+      <button class="submit-btn" onclick="submitForm()">✦ Confirmar registro ✦</button>
+    </div>
+
+    <div class="success-msg" id="successMsg">
+      <div class="success-icon">💛</div>
+      <h3>¡Están registrados!</h3>
+      <p>Los esperamos el <strong>23 de Mayo a las 19:00 h</strong><br>en Renuevo de Gracia.</p>
+      <br>
+      <p style="font-size:13px;color:#999;">«EL PADRE restaura, sana y hace<br>nuevas todas las cosas.»</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── FLOATING HEARTS ── */
+  const container = document.getElementById('hearts');
+  const positions = [8, 18, 30, 45, 55, 68, 78, 90];
+  positions.forEach((left, i) => {
+    const h = document.createElement('span');
+    h.classList.add('heart');
+    h.textContent = ['♥','♡','❤','💛'][i % 4];
+    h.style.left = left + '%';
+    const dur = 7 + Math.random() * 8;
+    const delay = Math.random() * 6;
+    const size = 10 + Math.random() * 10;
+    h.style.cssText += `bottom:0;font-size:${size}px;animation-duration:${dur}s;animation-delay:${delay}s;`;
+    container.appendChild(h);
+  });
+
+  /* ── MODAL ── */
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeOnOverlay(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  /* ── SUBMIT ── */
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5cx6Ho1HadcbNEJRuvKfKB5SGUi4nY-u4AwSpk3oXDKUgiffnBlbrRvhO66TIELjX/exec';
+
+  async function submitForm() {
+    const el    = document.getElementById('nombreEl').value.trim();
+    const ella  = document.getElementById('nombreElla').value.trim();
+    const tel   = document.getElementById('telefono').value.trim();
+    const correo= document.getElementById('correo').value.trim();
+    const como  = document.getElementById('comoSeEnteraron').value;
+
+    if (!el || !ella) {
+      shakeModal();
+      showFieldError(!el ? 'nombreEl' : 'nombreElla', 'Este campo es obligatorio');
+      return;
+    }
+
+    // Show loading state
+    const btn = document.querySelector('.submit-btn');
+    btn.textContent = '⏳ Registrando…';
+    btn.disabled = true;
+    btn.style.opacity = '0.7';
+
+    const fecha = new Date().toLocaleDateString('es-CL');
+
+    // Build form data (compatible with Google Apps Script doGet/doPost)
+    const params = new URLSearchParams({
+      'Nombre Él':           el,
+      'Nombre Ella':         ella,
+      'Teléfono':            tel   || '—',
+      'Correo':              correo|| '—',
+      'Cómo se enteraron':   como  || '—',
+      'Fecha':               fecha
+    });
+
+    try {
+      // Use no-cors fetch — GAS returns opaque response but data is saved
+      await fetch(SCRIPT_URL + '?' + params.toString(), {
+        method: 'GET',
+        mode: 'no-cors'
+      });
+
+      // Show success (assume saved — GAS doesn't return CORS headers)
+      document.getElementById('formWrapper').style.display = 'none';
+      document.getElementById('successMsg').style.display  = 'block';
+
+    } catch (err) {
+      btn.textContent = '✦ Confirmar registro ✦';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      alert('Hubo un problema al enviar. Por favor intenta de nuevo. 💛');
+      console.error(err);
+    }
+  }
+
+  function showFieldError(fieldId, msg) {
+    const field = document.getElementById(fieldId);
+    field.style.borderBottomColor = '#c0392b';
+    field.focus();
+    setTimeout(() => field.style.borderBottomColor = '', 2500);
+  }
+
+  function shakeModal() {
+    const modal = document.querySelector('.modal');
+    modal.style.animation = 'shake 0.4s ease';
+    setTimeout(() => modal.style.animation = '', 500);
+  }
+</script>
+</body>
+</html>
